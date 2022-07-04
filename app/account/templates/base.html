@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <span class="logo">Bookmarks</span>
+    {% if request.user.is_authenticated %}
+    <ul class="menu">
+        {% if section == "dashboard" %}
+        <li class="selected">
+            <a href="{% url 'dashboard' %}">My dashboard</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="{% url 'dashboard' %}">My dashboard</a>
+        </li>
+        {% endif %}
+        {% if section == 'images' %}
+        <li class="selected">
+            <a href="#">Images</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="#">Images</a>
+        </li>
+        {% endif %}
+        {% if section == "people" %}
+        <li class="selected">
+            <a href="#">People</a>
+        </li>
+        {% else %}
+        <li>
+            <a href="#">People</a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+    <span class="user">
+        {% if request.user.is_authenticated %}
+        Hello {{ request.user.first_name }},
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button id="signOutBtn" type="submit">Logout</button>
+            </form>
+        {% else %}
+        <a href="{% url 'login' %}">Log-in</a>
+        {% endif %}
+    </span>
+    </div>
+
+    {% block content %}{% endblock %}
+
+</body>
+
+</html>
