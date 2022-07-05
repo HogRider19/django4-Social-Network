@@ -38,18 +38,34 @@
         {% endif %}
     </ul>
     {% endif %}
+
+
     <span class="user">
         {% if request.user.is_authenticated %}
         Hello {{ request.user.first_name }},
-            <form method="POST" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button id="signOutBtn" type="submit">Logout</button>
-            </form>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button id="signOutBtn" type="submit">Logout</button>
+        </form>
         {% else %}
         <a href="{% url 'login' %}">Log-in</a>
         {% endif %}
     </span>
     </div>
+
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">
+            {{ message|safe }}
+            <a href="#" class="close">x</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    
 
     {% block content %}{% endblock %}
 
