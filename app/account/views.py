@@ -1,3 +1,4 @@
+from .forms import LoginForm, UserRegistrationForm
 from django.shortcuts import render, redirect, HttpResponse
 from .forms import LoginForm
 from django.contrib.auth import login, logout, authenticate
@@ -12,41 +13,18 @@ def dashboard(request):
     return render(request, 'account/dashboard.html', {'section': 'dashboard'})
 
 
-def signupuser(request):
-    if request.method == 'GET':
-        return render(request, 'account/signup.html', {'form':UserCreationForm()})
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            try:
-                user = User.objects.create_user(request.POST['username'], password=request.POST['password1'])
-                user.save()
-                login(request, user)
-                return redirect('home')
-            except IntegrityError:
-                return render(request, 'account/signup.html', {'form':UserCreationForm(), 'error' : 'Такое имя пользователя уже занято'})
-        else:
-            return render(request, 'account/signup.html', {'form':UserCreationForm(), 'error' : 'Введенные пароли не совадают'})
-
-
-
-def logoutuser(request):
+def register(request):
     if request.method == 'POST':
-        logout(request)
-        return redirect('dashboard')
-
-
-def loginuser(request):
-    if request.method == 'GET':
-        return render(request, 'account/login.html', {'form':AuthenticationForm()})
+        user_form = UserRegistrationForm(request.POST)
+        if user_form.is_valid():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
+            return render(
+                request,
+                'account/register_done.html',
+                {'new_user': new_user}
+            )
     else:
-        user = authenticate(
-            request,
-            username = request.POST['username'],
-            password = request.POST['password'],
-        )
-
-        if user is None:
-            return render(request, 'account/login.html', {'form':AuthenticationForm(), 'error':'Неправельный логин или пароль'})
-        else:
-            login(request, user)
-            return redirect('dashboard')
+        user_form = UserRegistrationForm()
+    return render(request,'account/register.html',{'user_form': user_form})
