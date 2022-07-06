@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'account',
+    'images',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -112,6 +113,9 @@ AUTHENTICATION_BACKENDS = [
 
 SOCIAL_AUTH_FACEBOOK_KEY = 'Facebook App ID'
 SOCIAL_AUTH_FACEBOOK_SECRET = 'Facebook App Secret'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'Google Consumer Key'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Google Consumer Secret'
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
