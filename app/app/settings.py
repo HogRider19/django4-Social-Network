@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +102,19 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'account.authentication.EmailAuthBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
+]
+
+SOCIAL_AUTH_FACEBOOK_KEY = 'Facebook App ID'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'Facebook App Secret'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
 
 
 # Internationalization
